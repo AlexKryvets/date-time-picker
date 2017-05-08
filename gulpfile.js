@@ -1,25 +1,25 @@
 var gulp = require('gulp');
 var path = require('path');
-var clean = require('gulp-clean');
-var uglify = require('gulp-uglify');
-var foreach = require('gulp-foreach');
-var rename = require("gulp-rename");
-var stylus = require('gulp-stylus');
-var buffer = require('vinyl-buffer');
-var nib = require('nib');
+var rimraf = require('rimraf');
+// var uglify = require('gulp-uglify');
+// var foreach = require('gulp-foreach');
+// var rename = require("gulp-rename");
+// var stylus = require('gulp-stylus');
+// var buffer = require('vinyl-buffer');
+// var nib = require('nib');
 var gulpTypescript = require('gulp-typescript');
 var typescript = require('typescript');
 var sourcemaps = require('gulp-sourcemaps');
 var header = require('gulp-header');
 var merge = require('merge2');
 var pkg = require('./package.json');
-var tsd = require('gulp-tsd');
+// var tsd = require('gulp-tsd');
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
-var replace = require('gulp-replace');
-var gulpIf = require('gulp-if');
+// var replace = require('gulp-replace');
+// var gulpIf = require('gulp-if');
 
-var jasmine = require('gulp-jasmine');
+// var jasmine = require('gulp-jasmine');
 
 var bundleTemplate = '// <%= pkg.name %> v<%= pkg.version %>\n';
 
@@ -46,23 +46,20 @@ gulp.task('webpack-noStyle', ['tsc','stylus'], webpackTask.bind(null, false, fal
 gulp.task('webpack-minify', ['tsc','stylus'], webpackTask.bind(null, true, true));
 gulp.task('webpack', ['tsc','stylus'], webpackTask.bind(null, false, true));
 
-gulp.task('stylus-watch', ['stylus-no-clean'], stylusWatch);
-gulp.task('stylus-no-clean', stylusTask);
+// gulp.task('stylus-watch', ['stylus-no-clean'], stylusWatch);
+// gulp.task('stylus-no-clean', stylusTask);
 
 gulp.task('tsc', ['cleanDist'], tscTask);
 gulp.task('stylus', ['cleanDist'], stylusTask);
 
-gulp.task('cleanDist', cleanDist);
 
-function stylusWatch() {
-    gulp.watch('./src/styles/!**/!*', ['stylus-no-clean']);
-}
+gulp.task('cleanDist', function (cb) {
+    rimraf(__dirname + '/dist/*', cb);
+});
 
-function cleanDist() {
-    return gulp
-        .src('dist', {read: false})
-        .pipe(clean());
-}
+// function stylusWatch() {
+//     gulp.watch('./src/styles/!**/!*', ['stylus-no-clean']);
+// }
 
 function tscTask() {
     var project = gulpTypescript.createProject('./tsconfig.json', {typescript: typescript});
@@ -122,11 +119,11 @@ function webpackTask(minify, styles) {
 
 function stylusTask() {
     // Uncompressed
-    gulp.src(['src/styles/*.styl', '!src/styles/theme-common.styl'])
-        .pipe(stylus({
-            use: nib(),
-            compress: false
-        }))
-        .pipe(gulp.dest('dist/styles'));
+    // gulp.src(['src/styles/*.styl', '!src/styles/theme-common.styl'])
+    //     .pipe(stylus({
+    //         use: nib(),
+    //         compress: false
+    //     }))
+    //     .pipe(gulp.dest('dist/styles'));
 }
 
